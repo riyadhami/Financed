@@ -1,6 +1,6 @@
 "use client"
-import { db } from '@utils/dbConfig';
-import { Budgets, Expenses } from '@utils/schema';
+import { db } from '../../../../utils/dbConfig';
+import { Budgets, Expenses } from '../../../../utils/schema';
 import { desc, eq } from 'drizzle-orm';
 import React, { useEffect, useState } from 'react'
 import ExpenseListTable from './_components/ExpenseListTable';
@@ -28,7 +28,7 @@ function ExpensesScreen() {
     .where(eq(Budgets.createdBy,user?.primaryEmailAddress.emailAddress))
     .orderBy(desc(Expenses.id));
     setExpensesList(result);
-   
+
   }
   return (
     <div className='p-10'>

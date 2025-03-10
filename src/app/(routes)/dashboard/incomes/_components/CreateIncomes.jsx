@@ -9,12 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "../../../../../components/ui/dialog";
 import EmojiPicker from "emoji-picker-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { db } from "@utils/dbConfig";
-import { Incomes } from "@utils/schema";
+import { Button } from "../../../../../components/ui/button";
+import { Input } from "../../../../../components/ui/input";
+import { db } from "../../../../../utils/dbConfig";
+import { Incomes } from "../../../../../utils/schema";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 
@@ -28,7 +28,7 @@ function CreateIncomes({ refreshData }) {
   const { user } = useUser();
 
   /**
-   * Used to Create New Budget
+   * Used to Create New Income Source
    */
   const onCreateIncomes = async () => {
     const result = await db
@@ -46,6 +46,7 @@ function CreateIncomes({ refreshData }) {
       toast("New Income Source Created!");
     }
   };
+
   return (
     <div>
       <Dialog>
@@ -62,42 +63,45 @@ function CreateIncomes({ refreshData }) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Create New Income Source</DialogTitle>
-            <DialogDescription>
-              <div className="mt-5">
-                <Button
-                  variant="outline"
-                  className="text-lg"
-                  onClick={() => setOpenEmojiPicker(!openEmojiPicker)}
-                >
-                  {emojiIcon}
-                </Button>
-                <div className="absolute z-20">
+          </DialogHeader>
+
+          <div className="mt-5">
+            <div className="relative">
+              <Button
+                variant="outline"
+                className="text-lg"
+                onClick={() => setOpenEmojiPicker(!openEmojiPicker)}
+              >
+                {emojiIcon}
+              </Button>
+              {openEmojiPicker && (
+                <div className="absolute z-50 top-12">
                   <EmojiPicker
-                    open={openEmojiPicker}
                     onEmojiClick={(e) => {
                       setEmojiIcon(e.emoji);
                       setOpenEmojiPicker(false);
                     }}
                   />
                 </div>
-                <div className="mt-2">
-                  <h2 className="text-black font-medium my-1">Source Name</h2>
-                  <Input
-                    placeholder="e.g. Youtube"
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div className="mt-2">
-                  <h2 className="text-black font-medium my-1">Montly Amount</h2>
-                  <Input
-                    type="number"
-                    placeholder="e.g. 5000$"
-                    onChange={(e) => setAmount(e.target.value)}
-                  />
-                </div>
-              </div>
-            </DialogDescription>
-          </DialogHeader>
+              )}
+            </div>
+            <div className="mt-2">
+              <h2 className="text-black font-medium my-1">Source Name</h2>
+              <Input
+                placeholder="e.g. Youtube"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="mt-2">
+              <h2 className="text-black font-medium my-1">Monthly Amount</h2>
+              <Input
+                type="number"
+                placeholder="e.g. 5000$"
+                onChange={(e) => setAmount(e.target.value)}
+              />
+            </div>
+          </div>
+
           <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
               <Button

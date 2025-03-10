@@ -10,22 +10,34 @@ import {
 } from "recharts";
 
 function BarChartDashboard({ budgetList }) {
+  // Transform data to ensure numbers are properly formatted
+  const chartData = budgetList.map(item => ({
+    name: item.name,
+    "Total Budget": Number(item.amount || 0),
+    "Total Spent": Number(item.totalSpend || 0)
+  }));
+
   return (
-    <div className="border rounded-2xl p-5">
-      <h2 className="font-bold text-lg">Activity</h2>
-      <ResponsiveContainer width={"80%"} height={300}>
+    <div className="border rounded-2xl p-5 w-full h-[400px]">
+      <h2 className="font-bold text-lg mb-4">Budget Activity</h2>
+      <ResponsiveContainer width="100%" height="100%">
         <BarChart
-          data={budgetList}
+          data={chartData}
           margin={{
-            top: 7,
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
           }}
         >
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip />
+          <Tooltip
+            formatter={(value) => `$${new Intl.NumberFormat().format(value)}`}
+          />
           <Legend />
-          <Bar dataKey="totalSpend" stackId="a" fill="#4845d2" />
-          <Bar dataKey="amount" stackId="a" fill="#C3C2FF" />
+          <Bar dataKey="Total Spent" fill="#4845d2" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="Total Budget" fill="#C3C2FF" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
